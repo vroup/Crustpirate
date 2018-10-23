@@ -22,9 +22,9 @@ app.use((req, res, next) => {
 
 /**** Mock data ****/
 let data = [
-  {id : 1, text : "This is some text 1", details : "Some more details 1"},
-  {id : 2, text : "This is some text 2", details : "Some more details 2"},
-  {id : 3, text : "This is some text 3", details : "Some more details 3"},
+  {id : 1, text : "This is some text 1.", details : "Some more details 1"},
+  {id : 2, text : "This is some text 2.", details : "Some more details 2"},
+  {id : 3, text : "This is some text 3.", details : "Some more details 3"},
 ];
 
 /**** Routes ****/

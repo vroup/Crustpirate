@@ -1,23 +1,23 @@
-import { Injectable } from '@angular/core';
-import { timer } from "rxjs";
-import { switchMap } from "rxjs/operators";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../environments/environment";
+import {Injectable} from '@angular/core';
+import {timer} from "rxjs";
+import {switchMap} from "rxjs/operators";
+import {HttpClient} from "@angular/common/http";
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  private url_prefix : string = environment.express_url;
+  private url_prefix: string = environment.express_url;
 
-  data : any[] = [];
+  data: any[] = [];
 
-  constructor(private http : HttpClient) {
+  constructor(private http: HttpClient) {
     timer(0, 1000)
       .pipe(switchMap(
-        _ => this.http.get<any[]>(this.url_prefix+'/api/my_data'))
+        _ => this.http.get<any[]>(this.url_prefix + '/api/my_data'))
       ).subscribe(data => {
-        this.data = data;
+      this.data = data;
     })
   }
 }
