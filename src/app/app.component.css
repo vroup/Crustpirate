@@ -1,3 +1,6 @@
 router-outlet {
   text-align: center;
+  background: red;
 }
+
+

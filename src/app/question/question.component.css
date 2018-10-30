@@ -1,0 +1,38 @@
+ul.answers {
+  width: 100%;
+  list-style-type: none;
+  clear: both;
+  padding-left: 0;
+}
+
+.answers li div {
+  float: left;
+  display: block;
+}
+
+.answers li {
+  clear: both;
+  display: block;
+}
+
+.answers .left-col {
+  padding: 0 10px;
+  text-align: center;
+}
+
+.answers .arrow-up.highlight {
+  color: orangered;
+}
+.answers .arrow-down.highlight {
+  color: mediumpurple;
+}
+
+.answers .right-col {
+  padding: 10px 5px;
+  /*width: 500px;*/
+}
+
+.answer {
+  clear: both;
+  width: 100%;
+}

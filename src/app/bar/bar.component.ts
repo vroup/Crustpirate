@@ -11,19 +11,19 @@ export class BarComponent implements OnInit {
   private theId : number;
 
   constructor(
-    private route : ActivatedRoute,
-    private router : Router,
-    private service : DataService) { }
+    private route: ActivatedRoute,
+    private router: Router,
+    private service: DataService) { }
 
   ngOnInit() {
     this.theId = parseInt(this.route.snapshot.paramMap.get('id'));
   }
 
-  GetId() : number {
+  get id() : number {
     return this.theId;
   }
 
-  GetData() : any {
+  get data() : any {
     return this.service.data.find(d => d.id == this.theId);
   }
 

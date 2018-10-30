@@ -1,0 +1,3 @@
+-POST nyt question fra /question/add
+-api svarer med questionId
+-redirect til /question/:questionId inden i callback-metoden
