@@ -77,8 +77,16 @@ export class QuestionComponent implements OnInit {
   }
 
   submitAnswer(): void {
-    if (this.answerText.length <= this.charLimit) {
+    try {
       this.submitEnabled = false;
+
+      if (this.answerText === undefined || this.answerText.trim().length === 0) {
+        throw `Answer body is missing.`;
+      }
+      if (this.answerText.length > this.charLimit) {
+        throw `Your text is too long! Limit is ${this.charLimit} characters.`;
+      }
+
       const myAnswer = {
         id: -1,
         answer: this.answerText,
@@ -92,8 +100,10 @@ export class QuestionComponent implements OnInit {
         this.submitEnabled = true;
         this.answers.push(myAnswer);
       });
-    } else {
-      window.alert(`Your text is too long! Limit is ${this.charLimit} characters.`)
+
+    } catch (ex) {
+      window.alert(ex);
+      this.submitEnabled = true;
     }
   }
 }

@@ -18,6 +18,12 @@ ul.answers {
 .answers .left-col {
   padding: 0 10px;
   text-align: center;
+  user-select: none;
+}
+
+.answers .arrow-up,
+.answers .arrow-down {
+  cursor: pointer;
 }
 
 .answers .arrow-up.highlight {
