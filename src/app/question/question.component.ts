@@ -12,6 +12,8 @@ import {switchMap} from "rxjs/operators";
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent implements OnInit {
+  private charLimit: number = 280;
+
   question: Question;
   answers: Answer[];
 
@@ -75,19 +77,23 @@ export class QuestionComponent implements OnInit {
   }
 
   submitAnswer(): void {
-    this.submitEnabled = false;
-    const myAnswer = {
-      id: -1,
-      answer: this.answerText,
-      questionId: this.question.id,
-      createTime: new Date(),
-      votesFor: 0,
-      votesAgainst: 0
-    };
-    this.service.postAnswer(myAnswer).subscribe(() => {
-      this.answerText = "";
-      this.submitEnabled = true;
-      this.answers.push(myAnswer);
-    });
+    if (this.answerText.length <= this.charLimit) {
+      this.submitEnabled = false;
+      const myAnswer = {
+        id: -1,
+        answer: this.answerText,
+        questionId: this.question.id,
+        createTime: new Date(),
+        votesFor: 0,
+        votesAgainst: 0
+      };
+      this.service.postAnswer(myAnswer).subscribe(() => {
+        this.answerText = "";
+        this.submitEnabled = true;
+        this.answers.push(myAnswer);
+      });
+    } else {
+      window.alert(`Your text is too long! Limit is ${this.charLimit} characters.`)
+    }
   }
 }

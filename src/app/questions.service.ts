@@ -10,6 +10,7 @@ import {Question} from "./question";
 })
 export class QuestionsService {
   private url_prefix: string = environment.express_url;
+  private charLimit: number = 1000;
 
   questions: Question[] = [];
 
@@ -23,12 +24,16 @@ export class QuestionsService {
   }
 
   postQuestion(question: any) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-    return this.http.post(this.url_prefix + '/api/question', question, httpOptions);
+    if (question.questionText.length <= this.charLimit) {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.http.post(this.url_prefix + '/api/question', question, httpOptions);
+    } else {
+      alert(`Please make your question shorter. The limit is ${this.charLimit} characters.`)
+    }
   }
 }
 
