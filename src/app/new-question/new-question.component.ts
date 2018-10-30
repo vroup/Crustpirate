@@ -22,9 +22,18 @@ export class NewQuestionComponent implements OnInit {
   }
 
   submit(): void {
-    this.service.postQuestion({
+    const obs = this.service.postQuestion({
       title: this.questionTitle,
       question: this.questionText
-    }).subscribe(p => this.router.navigate([`./question/${p}`]));
+    });
+
+    if (obs !== undefined) {
+      obs.subscribe(p => {
+        console.log(p);
+        // The callback is undefined, if there is an error.
+        this.router.navigate([`./question/${p}`])
+          .then(() => console.log("Navigated to question."))
+      });
+    }
   }
 }

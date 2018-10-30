@@ -24,34 +24,29 @@ export class QuestionsService {
   }
 
   postQuestion(question: any) {
-    if (question.questionText.length <= this.charLimit) {
+    try {
+      if(question.title === undefined || question.title.trim().length === 0) {
+        throw "Question title is missing.";
+      }
+
+      if(question.question === undefined || question.question.trim().length === 0) {
+        throw "Question body is missing.";
+      }
+
+      if (question.question.length > this.charLimit) {
+        throw `Please make your question shorter. The limit is ${this.charLimit} characters.`;
+      }
+
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
         })
       };
+
       return this.http.post(this.url_prefix + '/api/question', question, httpOptions);
-    } else {
-      alert(`Please make your question shorter. The limit is ${this.charLimit} characters.`)
+
+    } catch (ex) {
+      alert(ex)
     }
   }
 }
-
-/*
-export interface Question {
-  title: string,
-  question: string,
-  createTime: Date,
-  updateTime: Date,
-  id: number
-}
-*/
-
-/*
-export interface Answer {
-  answer: string,
-  questionId: number,
-  votesFor: number,
-  votesAgainst: number
-}
-*/
