@@ -4,4 +4,5 @@ export class Question {
   createTime: Date;
   updateTime: Date;
   id: number;
+  answered: boolean;
 }

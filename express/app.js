@@ -34,13 +34,15 @@ questions = [{
   "title": "Have trouble",
   "question": "What do?",
   "createTime": 0,
-  "updateTime": null
+  "updateTime": null,
+  "answered": true
 }, {
   "id": 2,
   "title": "Stupid thing",
   "question": "How make work?",
   "createTime": 1000000,
-  "updateTime": null
+  "updateTime": null,
+  "answered": false
 }];
 
 /**** Mock answers ****/
@@ -87,19 +89,26 @@ app.post('/api/question', (req, res) => {
     updateTime: null,
     title: req.body.title,
     question: req.body.question,
-    id: newId
+    id: newId,
+    answered: false
   });
   res.json(newId);
 });
 
 // POST new question and add it to the array.
 app.post('/api/answer', (req, res) => {
+  const questionId = req.body.questionId;
+  const question = questions.find(q => q.id === questionId);
+  if (!question.answered) {
+    question.answered = true;
+  }
+
   const newId = answers.reduce((a, c) => c.id > a ? c.id : a, 0) + 1;
   answers.push({
     createTime: new Date(),
     updateTime: null,
     answer: req.body.answer,
-    questionId: req.body.questionId,
+    questionId: questionId,
     id: newId,
     votesFor: 0,
     votesAgainst: 0

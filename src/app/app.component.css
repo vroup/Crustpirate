@@ -4,3 +4,8 @@ router-outlet {
 }
 
 
+body {
+  background: red;
+}
+
+

@@ -1,0 +1,13 @@
+.questions {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.question-meta {
+  color: gray;
+}
+
+.big-link {
+  font-size: larger;
+  font-weight: bold;
+}
