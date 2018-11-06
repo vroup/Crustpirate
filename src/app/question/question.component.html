@@ -1,4 +1,4 @@
-<a href="./questions">&lt; Back to all questions</a>
+<a routerLink="/questions">&lt; Back to all questions</a>
 <div *ngIf="question !== undefined">
   <h3>{{question.title}}</h3>
   <p>Asked {{question.createTime | date:'short'}}</p>
