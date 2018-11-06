@@ -1,10 +1,10 @@
 <h2>All questions</h2>
 <ul class="questions">
   <li *ngFor="let question of questions">
-    <p><a href="{{'./question/' + question.id}}">{{question.title}}</a><span *ngIf="question.answered"> (answered)</span></p>
+    <p><a routerLink="{{'./question/' + question.id}}">{{question.title}}</a><span *ngIf="question.answered"> (answered)</span></p>
     <p class="question-meta">{{minutesSince(question.createTime)}} by Anonymous</p>
   </li>
 </ul>
 <p>
-  <a href="./questions/new" class="big-link">Ask a question!</a>
+  <a routerLink="./questions/new" class="big-link">Ask a question!</a>
 </p>
