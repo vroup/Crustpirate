@@ -30,26 +30,29 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.service.getQuestion(id).subscribe(q => this.question = q);
-    timer(0, 10000)
+    const id = this.route.snapshot.paramMap.get('id');
+    this.service.getQuestion(id).subscribe(q => {
+      this.question = q;
+    });
+    timer(0, 1000)
       .pipe(switchMap(
         () => this.service.getAnswers(id))
       ).subscribe(data => this.answers = data);
   }
 
-  toggleUpVote(id: number) {
+  // Annul up-vote if already voted up - otherwise vote up.
+  toggleUpVote(id: string) {
     if (this.upVoted[id]) {
       // Annul vote.
-      this.answers.find(a => a.id === id).votesFor--;
+      this.answers.find(a => a._id === id).votesFor--;
       this.service.upVote(id, 'decrement');
       this.upVoted[id] = false;
-    } else if (id !== -1) {
+    } else if (id !== "-") {
       // Cast vote.
       if (this.downVoted[id]) {
         this.toggleDownVote(id);
       }
-      this.answers.find(a => a.id === id).votesFor++;
+      this.answers.find(a => a._id === id).votesFor++;
       this.service.upVote(id, 'increment');
       this.upVoted[id] = true;
     } else {
@@ -57,18 +60,18 @@ export class QuestionComponent implements OnInit {
     }
   }
 
-  toggleDownVote(id: number) {
+  toggleDownVote(id: string) {
     if (this.downVoted[id]) {
       // Annul vote.
-      this.answers.find(a => a.id === id).votesAgainst--;
+      this.answers.find(a => a._id === id).votesAgainst--;
       this.service.downVote(id, 'decrement');
       this.downVoted[id] = false;
-    } else if (id !== -1) {
+    } else if (id !== "-") {
       // Cast vote.
       if (this.upVoted[id]) {
         this.toggleUpVote(id);
       }
-      this.answers.find(a => a.id === id).votesAgainst++;
+      this.answers.find(a => a._id === id).votesAgainst++;
       this.service.downVote(id, 'increment');
       this.downVoted[id] = true;
     } else {
@@ -81,16 +84,18 @@ export class QuestionComponent implements OnInit {
       this.submitEnabled = false;
 
       if (this.answerText === undefined || this.answerText.trim().length === 0) {
-        throw `Answer body is missing.`;
+        alert(`Answer body is missing.`);
+        this.submitEnabled = true;
       }
       if (this.answerText.length > this.charLimit) {
-        throw `Your text is too long! Limit is ${this.charLimit} characters.`;
+        alert(`Your text is too long! Limit is ${this.charLimit} characters.`);
+        this.submitEnabled = true;
       }
 
       const myAnswer = {
-        id: -1,
+        _id: "-",
         answer: this.answerText,
-        questionId: this.question.id,
+        questionId: this.question._id,
         createTime: new Date(),
         votesFor: 0,
         votesAgainst: 0

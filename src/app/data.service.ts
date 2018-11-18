@@ -13,7 +13,7 @@ export class DataService {
   data: any[] = [];
 
   constructor(private http: HttpClient) {
-    timer(0, 1000)
+    timer(0, 5000)
       .pipe(switchMap(
         _ => this.http.get<any[]>(this.url_prefix + '/api/my_data'))
       ).subscribe(data => {

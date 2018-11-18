@@ -27,7 +27,7 @@ export class NewQuestionComponent implements OnInit {
       question: this.questionText
     });
 
-    // If an error has occured, the subscribe property will be undefined.
+    // If an error has occurred, the subscribe property will be undefined.
     if (obs !== undefined) {
       obs.subscribe(p => {
         this.router.navigate([`./question/${p}`])

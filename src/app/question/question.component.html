@@ -11,13 +11,13 @@
 <ul class="answers">
   <li *ngFor="let a of answers">
     <div class="left-col">
-      <span (click)="toggleUpVote(a.id)"
+      <span (click)="toggleUpVote(a._id)"
             class="arrow-up"
-            [ngClass]="{'highlight': upVoted[a.id]}">▲</span><br/>
+            [ngClass]="{'highlight': upVoted[a._id]}">▲</span><br/>
       {{a.votesFor - a.votesAgainst}}<br/>
-      <span (click)="toggleDownVote(a.id)"
+      <span (click)="toggleDownVote(a._id)"
             class="arrow-down"
-            [ngClass]="{'highlight': downVoted[a.id]}">▼</span>
+            [ngClass]="{'highlight': downVoted[a._id]}">▼</span>
     </div>
     <div class="right-col"><p>{{a.answer}}</p>
       <p>Answered {{a.createTime | date:'short'}}</p>
@@ -25,8 +25,8 @@
   </li>
 </ul>
 
-<div class="answer">Your answer:<br>
-  <textarea name="answer" id="myAnswer" cols="30" rows="5" [(ngModel)]="answerText"></textarea><br>
+<div class="answer">
+  <textarea title="Your answer" name="answer" id="myAnswer" cols="30" rows="5" [(ngModel)]="answerText"></textarea><br>
   <input type="submit" value="submit" (click)="submitAnswer()" [disabled]="!submitEnabled">
 </div>
 

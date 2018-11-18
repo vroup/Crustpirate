@@ -3,6 +3,6 @@ export class Question {
   question: string;
   createTime: Date;
   updateTime: Date;
-  id: number;
+  _id: string;
   answered: boolean;
 }

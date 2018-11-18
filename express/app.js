@@ -3,6 +3,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
+/**** App modules ****/
+const db = require('./db');
+const ObjectID = require('mongodb').ObjectID;
+
 /**** Configuration ****/
 const port = (process.env.PORT || 8080);
 const app = express();
@@ -12,7 +16,7 @@ app.use(morgan('combined')); // Log all requests to the console
 app.use(express.static('../dist/mandatory_exercise'));
 
 // Additional headers for the response to avoid trigger CORS security
-// errors in the browser
+// errors in the browser.
 // Read more: https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -27,34 +31,6 @@ let data = [
   {id: 2, text: "This is some text 2.", details: "Some more details 2"},
   {id: 3, text: "This is some text 3.", details: "Some more details 3"},
 ];
-
-/**** Mock questions ****/
-questions = [{
-  "id": 1,
-  "title": "Have trouble",
-  "question": "What do?",
-  "createTime": 0,
-  "updateTime": null,
-  "answered": true
-}, {
-  "id": 2,
-  "title": "Stupid thing",
-  "question": "How make work?",
-  "createTime": 1000000,
-  "updateTime": null,
-  "answered": false
-}];
-
-/**** Mock answers ****/
-answers = [{
-  "id": 1,
-  "questionId": 1,
-  "answer": "read the docs",
-  "createTime": 5000,
-  "updateTime": null,
-  "votesFor": 0,
-  "votesAgainst": 0
-}];
 
 /**** Routes ****/
 app.get('/api/my_data', (req, res) => res.json(data));
@@ -72,88 +48,70 @@ app.post('/api/my_data', (req, res) => {
   res.json(newData);
 });
 
-app.get('/api/questions', (req, res) => res.json(questions));
+/**** Connect to MongoDB and Start! ****/
+db.connect().then(() => {
+  /// Insert mock data.
+//  db.insertMockQuestions();
+//  db.insertMockAnswers();
 
-app.get('/api/question/:questionId', (req, res) => {
-  const id = Number(req.params.questionId);
-  const question = questions
-    .find(q => q.id === id);
-  res.json(question);
-});
-
-// POST new question and add it to the array.
-app.post('/api/question', (req, res) => {
-  const newId = questions.reduce((a, c) => c.id > a ? c.id : a, 0) + 1;
-  questions.push({
-    createTime: new Date(),
-    updateTime: null,
-    title: req.body.title,
-    question: req.body.question,
-    id: newId,
-    answered: false
+  /// Get a question.
+  app.get('/api/question/:questionId', (req, res) => {
+    const query = {'_id': ObjectID(req.params.questionId)};
+    db.getCollection('questions', query)
+      .then(
+        question => {
+          console.log(question);
+          res.json(question[0]);
+        }
+      );
   });
-  res.json(newId);
-});
 
-// POST new question and add it to the array.
-app.post('/api/answer', (req, res) => {
-  const questionId = req.body.questionId;
-  const question = questions.find(q => q.id === questionId);
-  if (!question.answered) {
-    question.answered = true;
-  }
-
-  const newId = answers.reduce((a, c) => c.id > a ? c.id : a, 0) + 1;
-  answers.push({
-    createTime: new Date(),
-    updateTime: null,
-    answer: req.body.answer,
-    questionId: questionId,
-    id: newId,
-    votesFor: 0,
-    votesAgainst: 0
+  // GET all questions.
+  app.get('/api/questions', (req, res) => {
+    db.getCollection('questions', {})
+      .then(questions => res.json(questions));
   });
-  res.json(newId);
+
+  // POST new question and add it to the array.
+  app.post('/api/question', (req, res) => {
+    db.insertQuestion(req.body.question, req.body.title)
+      .then(newId => res.json(newId));
+  });
+
+  // POST new answer and add it to the array.
+  app.post('/api/answer', (req, res) => {
+    const questionId = ObjectID(req.body.questionId);
+    db.getCollection('questions', {'_id': questionId}).then(q => {
+      if (!q.answered) {
+        q.answered = true;
+      }
+      db.insertAnswer(req.body.answer, questionId)
+        .then(newId => res.json(newId));
+    });
+  });
+
+  // GET answers to a question.
+  app.get('/api/answers/:questionId', (req, res) => {
+    const questionId = ObjectID(req.params.questionId);
+    db.getCollection('answers', {'questionId': questionId})
+      .then(answers => res.json(answers));
+  });
+
+  app.put('/api/upVote', (req, res) => {
+    const operation = req.body.operation;
+    db.upVote(req.body.id, operation !== 'decrement'); // rename decrement to 'cancel'.
+  });
+
+  app.put('/api/downVote', (req, res) => {
+    db.downVote(req.body.id, req.body.operation !== 'decrement'); // rename decrement to 'cancel'.
+  });
+
+  /**** Reroute all unknown requests to angular index.html ****/
+  app.get('/*', (req, res, next) => {
+    res.sendFile(path.join(__dirname, '../dist/mandatory_exercise/index.html'));
+  });
+
 });
-
-// GET answers to a question.
-app.get('/api/answers/:questionId', (req, res) => res.json(answers
-  .filter(a => a.questionId === Number(req.params.questionId))));
-
-app.get('/api/upVote/:id/:operation', (req, res) => {
-  const id = Number(req.params.id);
-  const operation = req.params.operation;
-  const answer = answers.find(a => a.id === id);
-  switch (operation) {
-    case "increment":
-      answer.votesFor++;
-      break;
-    case "decrement":
-      answer.votesFor--;
-      break;
-  }
-});
-
-app.get('/api/downVote/:id/:operation', (req, res) => {
-  const id = Number(req.params.id);
-  const operation = req.params.operation;
-  const answer = answers.find(a => a.id === id);
-  switch (operation) {
-    case "increment":
-      answer.votesAgainst++;
-      break;
-    case "decrement":
-      answer.votesAgainst--;
-      break;
-  }
-});
-
-/**** Reroute all unknown requests to angular index.html ****/
-app.get('/*', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../dist/mandatory_exercise/index.html'));
-});
-
 
 /**** Start ****/
 app.listen(port, () => console.log(`Mandatory exercise API running on port ${port}!`));
-

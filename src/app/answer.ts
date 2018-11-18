@@ -1,7 +1,7 @@
 export class Answer {
-  id: number;
+  _id: string;
   answer: string;
-  questionId: number;
+  questionId: string;
   votesFor: number;
   votesAgainst: number;
   createTime: Date;

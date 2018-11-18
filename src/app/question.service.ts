@@ -17,20 +17,22 @@ export class QuestionService {
   constructor(private http: HttpClient) {
   }
 
-  getQuestion(id: number): Observable<Question> {
+  getQuestion(id: string): Observable<Question> {
     return this.http.get<Question>(this.url_prefix + '/api/question/' + id);
   }
 
-  getAnswers(id: number): Observable<Answer[]> {
+  getAnswers(id: string): Observable<Answer[]> {
     return this.http.get<Answer[]>(this.url_prefix + '/api/answers/' + id);
   }
 
-  upVote(id: number, operation: string): void {
-    this.http.get(this.url_prefix + '/api/upVote/' + id + '/' + operation).subscribe();
+  upVote(id: string, operation: string): void {
+    this.http.put(`${this.url_prefix}/api/upVote`, {id: id, operation: operation}).subscribe(
+      p => console.log(p)
+    );
   }
 
-  downVote(id: number, operation: string): void {
-    this.http.get(this.url_prefix + '/api/downVote/' + id + '/' + operation).subscribe();
+  downVote(id: string, operation: string): void {
+    this.http.put(this.url_prefix + '/api/downVote', {id: id, operation: operation}).subscribe();
   }
 
   postAnswer(myAnswer: Answer) {

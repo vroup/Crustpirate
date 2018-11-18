@@ -1,7 +1,7 @@
 <h2>All questions</h2>
 <ul class="questions">
   <li *ngFor="let question of questions">
-    <p><a routerLink="/question/{{question.id}}">{{question.title}}</a><span *ngIf="question.answered"> (answered)</span></p>
+    <p><a routerLink="/question/{{question._id}}">{{question.title}}</a><span *ngIf="question.answered"> (answered)</span></p>
     <p class="question-meta">{{minutesSince(question.createTime)}} by Anonymous</p>
   </li>
 </ul>
