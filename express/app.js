@@ -34,7 +34,13 @@ app.use((req, res, next) => {
 // Check JWT
 app.use(
   checkJwt({secret: process.env.JWT_SECRET})
-    .unless({path: ['/api/authenticate/', '/api/questions']})
+    .unless({
+      path: [
+        '/api/authenticate/',
+        '/api/questions',
+        /\/api\/question\//,
+        /\/api\/answers\//]
+    })
 );
 
 app.use((err, req, res, next) => {

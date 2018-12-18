@@ -5,6 +5,7 @@ import {Observable, timer} from 'rxjs';
 import {environment} from '../environments/environment';
 import {Question} from './question';
 import {Answer} from './answer';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class QuestionService {
 
   question: Question;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private auth: AuthService) {
   }
 
   getQuestion(id: string): Observable<Question> {
@@ -40,7 +42,8 @@ export class QuestionService {
   postAnswer(myAnswer: Answer) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.auth.GetToken()}`
       })
     };
     const answer = {

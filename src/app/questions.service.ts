@@ -19,7 +19,7 @@ export class QuestionsService {
               private auth: AuthService) {
     timer(0, 10000)
       .pipe(switchMap(
-        _ => this.http.get<Question[]>(this.url_prefix + '/api/questions'))
+        () => this.http.get<Question[]>(this.url_prefix + '/api/questions'))
       ).subscribe(data => {
       this.questions = data;
     });
