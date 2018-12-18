@@ -7,15 +7,16 @@ import {QuestionComponent} from './question/question.component';
 import {QuestionsComponent} from './questions/questions.component';
 import {NewQuestionComponent} from './new-question/new-question.component';
 import {LoginComponent} from './login/login.component';
+import {LandingPageComponent} from './landing-page/landing-page.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
-  {path: 'example', component: FooComponent},
+  {path: '', component: LandingPageComponent},
   {path: 'example_with_id/:id', component: BarComponent},
   {path: 'questions', component: QuestionsComponent},
   {path: 'questions/new', component: NewQuestionComponent},
   {path: 'question/:id', component: QuestionComponent},
-  {path: '**', redirectTo: 'example'}
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({

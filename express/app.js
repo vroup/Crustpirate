@@ -19,7 +19,7 @@ const app = express();
 
 app.use(bodyParser.json()); // Parse JSON from the request body
 app.use(morgan('combined')); // Log all requests to the console
-app.use(express.static('../dist/mandatory_exercise'));
+app.use(express.static('../dist/CrustPirate'));
 
 // Additional headers for the response to avoid trigger CORS security
 // errors in the browser.
@@ -36,6 +36,9 @@ app.use(
   checkJwt({secret: process.env.JWT_SECRET})
     .unless({
       path: [
+        '/',
+        '/api/restaurants',
+        /\/api\/restaurant\//,
         '/api/authenticate/',
         '/api/questions',
         /\/api\/question\//,
@@ -121,8 +124,14 @@ db.connect().then(() => {
   /// Insert mock data. Need only run once.
   // db.insertMockQuestions();
   // db.insertMockAnswers();
+  db.insertMockRestaurants();
 
   // Insert mock users.
+
+  app.get('/api/restaurants', (req, res) => {
+    db.getCollection('restaurants', {})
+      .then(restaurants => res.json(restaurants))
+  });
 
   /// Get a question.
   app.get('/api/question/:questionId', (req, res) => {

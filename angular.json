@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mandatory_exercise": {
+    "CrustPirate": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/mandatory_exercise",
+            "outputPath": "dist/CrustPirate",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -51,18 +51,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "mandatory_exercise:build"
+            "browserTarget": "CrustPirate:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "mandatory_exercise:build:production"
+              "browserTarget": "CrustPirate:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "mandatory_exercise:build"
+            "browserTarget": "CrustPirate:build"
           }
         },
         "test": {
@@ -96,7 +96,7 @@
         }
       }
     },
-    "mandatory_exercise-e2e": {
+    "Crustpirate-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -104,11 +104,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "mandatory_exercise:serve"
+            "devServerTarget": "CrustPirate:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "mandatory_exercise:serve:production"
+              "devServerTarget": "CrustPirate:serve:production"
             }
           }
         },
@@ -124,5 +124,5 @@
       }
     }
   },
-  "defaultProject": "mandatory_exercise"
+  "defaultProject": "CrustPirate"
 }

@@ -14,6 +14,7 @@ module.exports = {
   countData: countData,
   insertData: insertData,
   insertMockQuestions: insertMockQuestions,
+  insertMockRestaurants: insertMockRestaurants,
   insertMockAnswers: insertMockAnswers,
   insertQuestion: insertQuestion,
   insertAnswer: insertAnswer,
@@ -169,6 +170,65 @@ const mockQuestions = [{
   "updateTime": null,
   "answered": false
 }];
+
+const mockRestaurants = [
+  {
+    "name": "Prima Pizza",
+    "rating": 3,
+    "numberOfRatings": 0
+  },
+  {
+    "name": "Stone's Pizza Kebab & Grill",
+    "rating": 3,
+    "numberOfRatings": 0
+  },
+  {
+    "name": "Sindbad Grill & Pizza",
+    "rating": 3,
+    "numberOfRatings": 0
+  },
+  {
+    "name": "Bellissimo Pizza",
+    "rating": 3,
+    "numberOfRatings": 0
+  },
+  {
+    "name": "La Casa",
+    "rating": 3,
+    "numberOfRatings": 0
+  },
+  {
+    "name": "Ravnsbjerg Pizzaria & Nærkøb",
+    "rating": 3,
+    "numberOfRatings": 0
+  },
+  {
+    "name": "Ravnsbjerg Elitekøbmand Pizza",
+    "rating": 3,
+    "numberOfRatings": 0
+  },
+  {
+    "name": "King Pizza Bar",
+    "rating": 3,
+    "numberOfRatings": 0
+  }
+];
+
+
+function insertMockRestaurants() {
+  return new Promise((resolve, reject) => {
+    const restaurants = client.db(dbName).collection("restaurants");
+
+    restaurants.deleteMany({}).then(
+      () => {
+        restaurants.insertMany(mockRestaurants).then((result) => {
+          console.log(`Inserted mock restaurants.`);
+          resolve(result);
+        }).catch((error) => console.error(error));
+      });
+  });
+}
+
 
 function insertMockQuestions() {
   return new Promise((resolve, reject) => {

@@ -1,0 +1,21 @@
+<h1>
+  We put the R's in Restaurant Reviews!
+</h1>
+
+
+<form #f="ngForm">
+  Restaurants near you*:
+  <select name="restaurant" ngModel>
+    <option value="" disabled>Choose a restaurant</option>
+    <option *ngFor="let restaurant of restaurants"
+            [ngValue]="restaurant">
+      {{restaurant.name}}
+    </option>
+  </select>
+</form>
+
+<p>
+  <small>*) Near Business Academy Aarhus to be precise</small>
+</p>
+
+<pre>Selected: {{f.value | json}}</pre>
