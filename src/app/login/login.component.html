@@ -1,0 +1,15 @@
+<h1>Login</h1>
+<form #form="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
+  <p>Username: <input type="text" ngModel name="username" required #username="ngModel"/>
+  </p>
+  <p>Password: <input type="text" ngModel name="password" required #password="ngModel"/>
+  </p>
+  <p>
+    <input type="submit" value="Submit" />
+  </p>
+</form>
+
+<p>First name value: {{ username.value }}</p>
+<p>First name valid: {{ password.valid }}</p>
+<p>Form value: {{ form.value | json }}</p>
+<p>Form valid: {{ form.valid }}</p>

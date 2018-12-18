@@ -9,10 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "express-jwt": "^5.3.1",
+    "jsonwebtoken": "^8.4.0",
     "mongodb": "^3.1.9",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "socket.io": "latest"
   },
   "description": "Small template for developing an express.js/angular 2+ application",
   "engines": {

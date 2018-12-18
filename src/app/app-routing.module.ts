@@ -1,19 +1,21 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RouterModule, Routes} from "@angular/router";
-import {FooComponent} from "./foo/foo.component";
-import {BarComponent} from "./bar/bar.component";
-import {QuestionComponent} from "./question/question.component";
-import {QuestionsComponent} from "./questions/questions.component";
-import {NewQuestionComponent} from "./new-question/new-question.component";
+import {RouterModule, Routes} from '@angular/router';
+import {FooComponent} from './foo/foo.component';
+import {BarComponent} from './bar/bar.component';
+import {QuestionComponent} from './question/question.component';
+import {QuestionsComponent} from './questions/questions.component';
+import {NewQuestionComponent} from './new-question/new-question.component';
+import {LoginComponent} from './login/login.component';
 
 const appRoutes: Routes = [
-  {path: "example", component: FooComponent},
-  {path: "example_with_id/:id", component: BarComponent},
-  {path: "questions", component: QuestionsComponent},
-  {path: "questions/new", component: NewQuestionComponent},
-  {path: "question/:id", component: QuestionComponent},
-  {path: "**", redirectTo: "example"}
+  {path: 'login', component: LoginComponent},
+  {path: 'example', component: FooComponent},
+  {path: 'example_with_id/:id', component: BarComponent},
+  {path: 'questions', component: QuestionsComponent},
+  {path: 'questions/new', component: NewQuestionComponent},
+  {path: 'question/:id', component: QuestionComponent},
+  {path: '**', redirectTo: 'example'}
 ];
 
 @NgModule({

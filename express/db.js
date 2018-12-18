@@ -82,6 +82,7 @@ function insertQuestion(text, title) {
   });
 }
 
+// Increments votesFor/decrements if cancel flag is set.
 function upVote(answerId, cancel) {
   client.db(dbName).collection('answers')
     .update(
@@ -90,6 +91,7 @@ function upVote(answerId, cancel) {
     );
 }
 
+// Increments votesAgainst/decrements if cancel flag is set.
 function downVote(answerId, cancel) {
   client.db(dbName).collection('answers')
     .update(

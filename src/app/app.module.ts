@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +10,7 @@ import { BarComponent } from './bar/bar.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { QuestionComponent } from './question/question.component';
 import { NewQuestionComponent } from './new-question/new-question.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { NewQuestionComponent } from './new-question/new-question.component';
     BarComponent,
     QuestionsComponent,
     QuestionComponent,
-    NewQuestionComponent
+    NewQuestionComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

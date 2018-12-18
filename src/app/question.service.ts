@@ -1,10 +1,10 @@
-import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable, timer} from "rxjs";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable, timer} from 'rxjs';
 
-import {environment} from "../environments/environment";
-import {Question} from "./question";
-import {Answer} from "./answer";
+import {environment} from '../environments/environment';
+import {Question} from './question';
+import {Answer} from './answer';
 
 @Injectable({
   providedIn: 'root'
@@ -26,13 +26,15 @@ export class QuestionService {
   }
 
   upVote(id: string, operation: string): void {
-    this.http.put(`${this.url_prefix}/api/upVote`, {id: id, operation: operation}).subscribe(
+    this.http.put(`${this.url_prefix}/api/upVote`, {id: id, operation: operation})
+      .subscribe(
       p => console.log(p)
     );
   }
 
   downVote(id: string, operation: string): void {
-    this.http.put(this.url_prefix + '/api/downVote', {id: id, operation: operation}).subscribe();
+    this.http.put(this.url_prefix + '/api/downVote', {id: id, operation: operation})
+      .subscribe();
   }
 
   postAnswer(myAnswer: Answer) {

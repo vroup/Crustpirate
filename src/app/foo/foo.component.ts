@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from "../data.service";
-import { Router } from "@angular/router";
+import { DataService } from '../data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-foo',
@@ -10,14 +10,14 @@ import { Router } from "@angular/router";
 export class FooComponent implements OnInit {
 
   constructor(
-    private service : DataService,
-    private router : Router
+    private service: DataService,
+    private router: Router
   ) { }
 
   ngOnInit() {
   }
 
-  GetData() : any[] {
+  GetData(): any[] {
     return this.service.data;
   }
 

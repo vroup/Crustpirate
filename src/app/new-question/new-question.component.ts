@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {QuestionsService} from "../questions.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {QuestionsService} from '../questions.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-new-question',
@@ -31,7 +31,7 @@ export class NewQuestionComponent implements OnInit {
     if (obs !== undefined) {
       obs.subscribe(p => {
         this.router.navigate([`./question/${p}`])
-          .then(() => console.log("Navigated to question."))
+          .then(() => console.log('Navigated to question.'));
       });
     }
   }
