@@ -2,7 +2,7 @@ const mongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 
 const dbUrl = process.env.MONGODB_URL || 'mongodb://localhost:27017';
-const dbName = 'crust-pirate';
+const dbName = 'crustpirate';
 let client = {};
 
 module.exports = {
