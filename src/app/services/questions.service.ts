@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {timer} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../environments/environment';
-import {Question} from './question';
+import {environment} from '../../environments/environment';
+import {Question} from '../view-models/question';
 import {AuthService} from './auth.service';
 
 @Injectable({

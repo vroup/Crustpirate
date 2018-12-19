@@ -37,8 +37,11 @@ app.use(
     .unless({
       path: [
         '/',
+        '/login',
+        /\/restaurant\//,
         '/api/restaurants',
         /\/api\/restaurant\//,
+        /\/api\/reviews\//,
         '/api/authenticate/',
         '/api/questions',
         /\/api\/question\//,
@@ -59,18 +62,18 @@ let data = [
   {id: 3, text: "This is some text 3.", details: "Some more details 3"},
 ];
 
-let users = [
-  {name: "kristian", hash: ""},
-  {name: "skb", hash: ""}
+let mockUsers = [
+  {username: "kristian", hash: ""},
+  {username: "skb", hash: ""}
 ];
 
 bcrypt.hash("password123", 10, function (err, hash) {
-  users[0].hash = hash;
+  mockUsers[0].hash = hash;
   console.log("Mock hash generated");
 });
 
 bcrypt.hash("password456", 10, function (err, hash) {
-  users[1].hash = hash;
+  mockUsers[1].hash = hash;
   console.log("Mock hash generated");
 });
 
@@ -90,43 +93,47 @@ app.post('/api/my_data', (req, res) => {
   res.json(newData);
 });
 
-// Remember trailing slash when calling!
-app.post('/api/authenticate', (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-
-  console.log(username + ", " + password);
-
-  const user = users.find((user) => user.name === username);
-  if (user) {
-    bcrypt.compare(password, user.hash, (err, result) => {
-      if (result) {
-        const payload = {
-          username: username,
-          admin: false
-        };
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1h'});
-
-        res.json({
-          message: 'User authenticated successfully.',
-          token: token
-        });
-      }
-      else res.status(401).json({message: "Password mismatch!"})
-    });
-  } else {
-    res.status(404).json({message: "User not found!"});
-  }
-});
-
 /**** Connect to MongoDB and Start! ****/
 db.connect().then(() => {
   /// Insert mock data. Need only run once.
-  // db.insertMockQuestions();
+  db.insertMockQuestions();
   // db.insertMockAnswers();
   db.insertMockRestaurants();
+  db.insertMockUsers(mockUsers);
 
-  // Insert mock users.
+  // Remember trailing slash when calling!
+  app.post('/api/authenticate', (req, res) => {
+
+    const username = req.body.username;
+    const password = req.body.password;
+
+    console.log(username + ", " + password);
+
+    db.getCollection("users", {"username": username}).then(
+      users => {
+        if(users.length === 1) {
+          const [user] = users;
+          bcrypt.compare(password, user.hash, (err, result) => {
+            if (result) {
+              const payload = {
+                username: username,
+                admin: false
+              };
+              const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1h'});
+
+              res.json({
+                message: 'User authenticated successfully.',
+                token: token
+              });
+            }
+            else res.status(401).json({message: "Password mismatch!"})
+          });
+        } else {
+          res.status(404).json({message: "User not found!"});
+        }
+      }
+    );
+  });
 
   app.get('/api/restaurants', (req, res) => {
     db.getCollection('restaurants', {})
@@ -187,7 +194,7 @@ db.connect().then(() => {
 
   /**** Reroute all unknown requests to angular index.html ****/
   app.get('/*', (req, res, next) => {
-    console.log("This is an unknown request.")
+    console.log("This is an unknown request.");
     res.sendFile(path.join(__dirname, '../dist/mandatory_exercise/index.html'));
   });
 });

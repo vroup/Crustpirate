@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Subscription, timer} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../environments/environment';
+import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
 import {AuthService} from './auth.service';
 

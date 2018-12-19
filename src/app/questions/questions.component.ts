@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {QuestionsService} from '../questions.service';
-import {Question} from '../question';
+import {QuestionsService} from '../services/questions.service';
+import {Question} from '../view-models/question';
 
 @Component({
   selector: 'app-questions',
@@ -9,17 +9,7 @@ import {Question} from '../question';
 })
 export class QuestionsComponent implements OnInit {
 
-  constructor(private service: QuestionsService) {
-  }
-
-  ngOnInit() {
-  }
-
-  get questions(): Question[] {
-    return this.service.questions;
-  }
-
-  minutesSince(createTime: Date) {
+  static minutesSince(createTime: Date) {
     const ms = Number(new Date()) - Number(new Date(createTime));
     const year = 1000 * 60 * 60 * 24 * 365.25;
     const week = 1000 * 60 * 60 * 24 * 7;
@@ -49,5 +39,15 @@ export class QuestionsComponent implements OnInit {
     } else {
       return 'now';
     }
+  }
+
+  constructor(private service: QuestionsService) {
+  }
+
+  ngOnInit() {
+  }
+
+  get questions(): Question[] {
+    return this.service.questions;
   }
 }

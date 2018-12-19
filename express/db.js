@@ -2,7 +2,7 @@ const mongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 
 const dbUrl = process.env.MONGODB_URL || 'mongodb://localhost:27017';
-const dbName = 'qa-engine';
+const dbName = 'crust-pirate';
 let client = {};
 
 module.exports = {
@@ -15,6 +15,7 @@ module.exports = {
   insertData: insertData,
   insertMockQuestions: insertMockQuestions,
   insertMockRestaurants: insertMockRestaurants,
+  insertMockUsers: insertMockUsers,
   insertMockAnswers: insertMockAnswers,
   insertQuestion: insertQuestion,
   insertAnswer: insertAnswer,
@@ -156,21 +157,6 @@ function generateTestData(count) {
   });
 }
 
-/**** Mock questions ****/
-const mockQuestions = [{
-  "title": "Have trouble",
-  "question": "What do?",
-  "createTime": 0,
-  "updateTime": null,
-  "answered": true
-}, {
-  "title": "Stupid thing",
-  "question": "How make work?",
-  "createTime": 10000000,
-  "updateTime": null,
-  "answered": false
-}];
-
 const mockRestaurants = [
   {
     "name": "Prima Pizza",
@@ -214,14 +200,13 @@ const mockRestaurants = [
   }
 ];
 
-
 function insertMockRestaurants() {
   return new Promise((resolve, reject) => {
     const restaurants = client.db(dbName).collection("restaurants");
 
     restaurants.deleteMany({}).then(
       () => {
-        restaurants.insertMany(mockRestaurants).then((result) => {
+        restaurants.insertMany(mockRestaurants).then(result => {
           console.log(`Inserted mock restaurants.`);
           resolve(result);
         }).catch((error) => console.error(error));
@@ -229,21 +214,38 @@ function insertMockRestaurants() {
   });
 }
 
-
-function insertMockQuestions() {
+function insertMockUsers(mockUsers) {
   return new Promise((resolve, reject) => {
-    const questions = client.db(dbName).collection("questions");
+    const users = client.db(dbName).collection("users");
 
-    questions.insertMany(mockQuestions).then((result) => {
-      console.log(`Inserted mock questions.`);
-      resolve(result);
-    }).catch((error) => console.error(error));
+    users.deleteMany({}).then(
+      () => {
+        users.insertMany(mockUsers).then(result => {
+          console.log(`Inserted mock users.`);
+          resolve(result);
+        }).catch((error) => console.error(error));
+      });
   });
 }
 
+/**** Mock questions ****/
+const mockQuestions = [{
+  "title": "Have trouble",
+  "question": "What do?",
+  "createTime": 0,
+  "updateTime": null,
+  "answered": true
+}, {
+  "title": "Stupid thing",
+  "question": "How make work?",
+  "createTime": 10000000,
+  "updateTime": null,
+  "answered": false
+}];
+
 /**** Mock answers ****/
 const mockAnswers = [{
-  "questionId": "-",
+  "questionId": "[]",
   "answer": "read the docs",
   "createTime": 5000,
   "updateTime": null,
@@ -251,14 +253,31 @@ const mockAnswers = [{
   "votesAgainst": 0
 }];
 
-// Will not work without knowing the _id of the question.
-function insertMockAnswers() {
-  return new Promise((resolve, reject) => {
-    const answers = client.db(dbName).collection("answers");
+function insertMockQuestions() {
+  const questions = client.db(dbName).collection("questions");
+  questions.deleteMany({}).then(() => {
+    questions.insertMany(mockQuestions).then((result) => {
+      console.log(`Inserted mock questions.`);
+      getCollection("questions", {"answered": true}).then(q =>
+        insertMockAnswers(q[0]._id)
+      );
+    }).catch((error) => console.error(error))
+  });
+}
 
-    answers.insertMany(mockAnswers).then((result) => {
-      console.log(`Inserted mock answers.`);
-      resolve(result);
-    }).catch((error) => console.error(error));
+// Will not work without knowing the _id of the question.
+function insertMockAnswers(id) {
+  const answers = client.db(dbName).collection("answers");
+  // Delete existing answers from db.
+  answers.deleteMany({}).then(() => {
+    return new Promise((resolve, reject) => {
+
+      mockAnswers.forEach(a => a.questionId = id);
+
+      answers.insertMany(mockAnswers).then((result) => {
+        console.log(`Inserted mock answers.`);
+        resolve(result);
+      }).catch((error) => console.error(error));
+    });
   });
 }

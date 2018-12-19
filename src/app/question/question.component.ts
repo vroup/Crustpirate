@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {Question} from "../question";
-import {Answer} from "../answer";
-import {QuestionService} from "../question.service";
-import {timer} from "rxjs";
-import {switchMap} from "rxjs/operators";
+import {ActivatedRoute, Router} from '@angular/router';
+import {Question} from '../view-models/question';
+import {Answer} from '../view-models/answer';
+import {QuestionService} from '../services/question.service';
+import {timer} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-question',
@@ -12,7 +12,7 @@ import {switchMap} from "rxjs/operators";
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent implements OnInit {
-  private charLimit: number = 280;
+  private charLimit = 280;
 
   question: Question;
   answers: Answer[];
@@ -47,7 +47,7 @@ export class QuestionComponent implements OnInit {
       this.answers.find(a => a._id === id).votesFor--;
       this.service.upVote(id, 'decrement');
       this.upVoted[id] = false;
-    } else if (id !== "-") {
+    } else if (id !== '-') {
       // Cast vote.
       if (this.downVoted[id]) {
         this.toggleDownVote(id);
@@ -56,7 +56,7 @@ export class QuestionComponent implements OnInit {
       this.service.upVote(id, 'increment');
       this.upVoted[id] = true;
     } else {
-      window.alert("Wait a little!");
+      window.alert('Wait a little!');
     }
   }
 
@@ -66,7 +66,7 @@ export class QuestionComponent implements OnInit {
       this.answers.find(a => a._id === id).votesAgainst--;
       this.service.downVote(id, 'decrement');
       this.downVoted[id] = false;
-    } else if (id !== "-") {
+    } else if (id !== '-') {
       // Cast vote.
       if (this.upVoted[id]) {
         this.toggleUpVote(id);
@@ -75,7 +75,7 @@ export class QuestionComponent implements OnInit {
       this.service.downVote(id, 'increment');
       this.downVoted[id] = true;
     } else {
-      window.alert("Wait a little!");
+      window.alert('Wait a little!');
     }
   }
 
@@ -93,7 +93,7 @@ export class QuestionComponent implements OnInit {
       }
 
       const myAnswer = {
-        _id: "-",
+        _id: '-',
         answer: this.answerText,
         questionId: this.question._id,
         createTime: new Date(),
@@ -101,7 +101,7 @@ export class QuestionComponent implements OnInit {
         votesAgainst: 0
       };
       this.service.postAnswer(myAnswer).subscribe(() => {
-        this.answerText = "";
+        this.answerText = '';
         this.submitEnabled = true;
         this.answers.push(myAnswer);
       });

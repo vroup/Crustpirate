@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {RestaurantService} from '../restaurant.service';
-import {Restaurant} from '../restaurant';
+import {RestaurantService} from '../services/restaurant.service';
+import {Restaurant} from '../view-models/restaurant';
 import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({

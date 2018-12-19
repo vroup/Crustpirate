@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
-import {DataService} from "../data.service";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DataService} from '../services/data.service';
 
 @Component({
   selector: 'app-bar',
@@ -8,23 +8,24 @@ import {DataService} from "../data.service";
   styleUrls: ['./bar.component.css']
 })
 export class BarComponent implements OnInit {
-  private theId : number;
+  private theId: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: DataService) { }
-
-  ngOnInit() {
-    this.theId = parseInt(this.route.snapshot.paramMap.get('id'));
+    private service: DataService) {
   }
 
-  get id() : number {
+  ngOnInit() {
+    this.theId = Number(this.route.snapshot.paramMap.get('id'));
+  }
+
+  get id(): number {
     return this.theId;
   }
 
-  get data() : any {
-    return this.service.data.find(d => d.id == this.theId);
+  get data(): any {
+    return this.service.data.find(d => d.id === this.theId);
   }
 
 }

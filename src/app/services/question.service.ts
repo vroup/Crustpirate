@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, timer} from 'rxjs';
 
-import {environment} from '../environments/environment';
-import {Question} from './question';
-import {Answer} from './answer';
+import {environment} from '../../environments/environment';
+import {Question} from '../view-models/question';
+import {Answer} from '../view-models/answer';
 import {AuthService} from './auth.service';
 
 @Injectable({
