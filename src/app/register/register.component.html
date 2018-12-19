@@ -1,0 +1,11 @@
+<h1>Register new user</h1>
+
+<form #form="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
+  <p>Desired username:
+    <input type="text" name="username" ngModel /></p>
+  <p>Password:
+    <input type="password" name="password" ngModel /></p>
+  <p>Repeat password:
+    <input type="password" name="repeatPassword" ngModel /></p>
+  <p><input type="submit" value="Register" /> {{result}}</p>
+</form>

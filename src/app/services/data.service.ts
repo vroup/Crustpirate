@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Subscription, timer} from 'rxjs';
+import {BehaviorSubject, Subscription, timer} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
 import {AuthService} from './auth.service';
+import {promise} from 'selenium-webdriver';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class DataService {
 
   data: any[] = [];
   pollster: Subscription;
+  changes: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
     private http: HttpClient,
@@ -40,7 +42,7 @@ export class DataService {
 
   StartPollster() {
     console.log('Starting pollster.');
-    this.pollster = timer(0, 1000)
+    this.pollster = timer(0, 10000)
       .pipe(switchMap(
         () => this.http.get<any[]>(this.url_prefix + '/api/my_data', this.httpOptions))
       ).subscribe(data => {
@@ -60,10 +62,33 @@ export class DataService {
       password: password
     }).subscribe(data => {
       this.auth.SetToken(data.token);
+      this.auth.SetUser(username);
       this.CreateHttpOptions();
-      this.StartPollster();
-      this.router.navigate(['/questions'])
-        .then(() => {console.log('Navigated!'); });
+      // this.StartPollster();
+      this.router.navigate(['/'])
+        .then(() => {
+          this.changes.next(true);
+          console.log('Navigated!');
+        });
+    });
+  }
+
+  Logout() {
+    this.auth.Logout();
+    this.changes.next(false);
+  }
+
+  RegisterNewUser(username, password): Promise<string> {
+    const user = {
+      username: username,
+      password: password
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post<any>(`${this.url_prefix}/api/new_user`, user)
+        .subscribe(response => resolve(response.message), response => {
+          reject(response.error);
+        });
     });
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -7,11 +7,21 @@ import {Router} from '@angular/router';
 export class AuthService {
 
   storageKey = 'foobar-jwt';
+  usernameKey = 'crust-pirate-user';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+  }
+
+  SetUser(user: string): void {
+    localStorage.setItem(this.usernameKey, user);
+  }
 
   SetToken(token: string): void {
     localStorage.setItem(this.storageKey, token);
+  }
+
+  GetUser(): string {
+    return localStorage.getItem(this.usernameKey);
   }
 
   GetToken(): string {
@@ -24,7 +34,8 @@ export class AuthService {
 
   Logout() {
     localStorage.removeItem(this.storageKey);
-    this.router.navigate(['/login']);
+    localStorage.removeItem(this.usernameKey);
+    this.router.navigate(['/']);
   }
 
 }

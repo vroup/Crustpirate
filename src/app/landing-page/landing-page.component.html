@@ -5,7 +5,7 @@
 
 <form #f="ngForm">
   Restaurants near you*:
-  <select name="restaurant" ngModel>
+  <select name="restaurant" ngModel (change)="goToRestaurant(f)">
     <option value="" disabled>Choose a restaurant</option>
     <option *ngFor="let restaurant of restaurants"
             [ngValue]="restaurant">

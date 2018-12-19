@@ -8,9 +8,13 @@ import {QuestionsComponent} from './questions/questions.component';
 import {NewQuestionComponent} from './new-question/new-question.component';
 import {LoginComponent} from './login/login.component';
 import {LandingPageComponent} from './landing-page/landing-page.component';
+import {RegisterComponent} from './register/register.component';
+import {RestaurantComponent} from './restaurant/restaurant.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
+  {path: 'restaurant/:id', component: RestaurantComponent},
   {path: '', component: LandingPageComponent},
   {path: 'example_with_id/:id', component: BarComponent},
   {path: 'questions', component: QuestionsComponent},

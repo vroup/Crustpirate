@@ -16,6 +16,7 @@ module.exports = {
   insertMockQuestions: insertMockQuestions,
   insertMockRestaurants: insertMockRestaurants,
   insertMockUsers: insertMockUsers,
+  insertUser: insertUser,
   insertMockAnswers: insertMockAnswers,
   insertQuestion: insertQuestion,
   insertAnswer: insertAnswer,
@@ -228,6 +229,21 @@ function insertMockUsers(mockUsers) {
   });
 }
 
+function insertUser(username, hash) {
+  return new Promise((resolve, reject) => {
+    const users = client.db(dbName).collection("users");
+    users.insertOne({
+      username: username,
+      hash: hash,
+      createTime: new Date()
+    }).then(result => {
+      console.log("Inserted user.");
+      resolve(result);
+    }, r => reject(r))
+      .catch((error) => console.error(error));
+  });
+}
+
 /**** Mock questions ****/
 const mockQuestions = [{
   "title": "Have trouble",
@@ -245,7 +261,7 @@ const mockQuestions = [{
 
 /**** Mock answers ****/
 const mockAnswers = [{
-  "questionId": "[]",
+  "questionId": null,
   "answer": "read the docs",
   "createTime": 5000,
   "updateTime": null,

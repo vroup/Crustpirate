@@ -10,7 +10,7 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./restaurant.component.css']
 })
 export class RestaurantComponent implements OnInit {
-  restaurant: Restaurant;
+  restaurant: Restaurant = null;
   reviews: Review[];
 
   constructor(private service: RestaurantService,
@@ -18,6 +18,7 @@ export class RestaurantComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+    console.log(id);
     this.reviews = this.service.reviews;
   }
 

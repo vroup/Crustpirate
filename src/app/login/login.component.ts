@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../services/auth.service';
 import {DataService} from '../services/data.service';
 import {NgForm} from '@angular/forms';
 
@@ -11,7 +10,6 @@ import {NgForm} from '@angular/forms';
 export class LoginComponent implements OnInit {
 
   constructor(
-    private authService: AuthService,
     private dataService: DataService) {
   }
 
@@ -20,7 +18,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    // console.log(form.value.username, form.value.password);
     this.dataService.Authenticate(form.value.username, form.value.password);
   }
 }

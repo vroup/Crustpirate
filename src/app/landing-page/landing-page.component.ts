@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {RestaurantService} from '../services/restaurant.service';
 import {Restaurant} from '../view-models/restaurant';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, NgForm} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
@@ -9,9 +10,10 @@ import {FormControl, FormGroup} from '@angular/forms';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
-  selectedRestaurantId: number;
+  selectedRestaurantId: string;
 
-  constructor(private service: RestaurantService) {
+  constructor(private service: RestaurantService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -21,5 +23,12 @@ export class LandingPageComponent implements OnInit {
     return this.service.restaurants;
   }
 
+
+  goToRestaurant(f: NgForm) {
+    const id: string = f.value.restaurant._id;
+    console.log(id);
+    this.router.navigate(['/restaurant/' + id]);
+    // this.router.navigate(['/login']);
+  }
 
 }

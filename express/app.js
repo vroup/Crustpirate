@@ -38,11 +38,14 @@ app.use(
       path: [
         '/',
         '/login',
+        '/register',
+        '/questions',
         /\/restaurant\//,
         '/api/restaurants',
         /\/api\/restaurant\//,
         /\/api\/reviews\//,
         '/api/authenticate/',
+        '/api/new_user',
         '/api/questions',
         /\/api\/question\//,
         /\/api\/answers\//]
@@ -111,7 +114,7 @@ db.connect().then(() => {
 
     db.getCollection("users", {"username": username}).then(
       users => {
-        if(users.length === 1) {
+        if (users.length === 1) {
           const [user] = users;
           bcrypt.compare(password, user.hash, (err, result) => {
             if (result) {
@@ -125,14 +128,31 @@ db.connect().then(() => {
                 message: 'User authenticated successfully.',
                 token: token
               });
-            }
-            else res.status(401).json({message: "Password mismatch!"})
+            } else res.status(401).json({message: "Password mismatch!"})
           });
         } else {
           res.status(404).json({message: "User not found!"});
         }
       }
     );
+  });
+
+  app.post('/api/new_user', (req, res, next) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    db.getCollection("users", {"username": username})
+      .then(users => {
+        if (users.length > 0) {
+          throw new Error("Username exists.");
+        } else {
+          bcrypt.hash(password, 10, function (err, hash) {
+            db.insertUser(username, hash).then(() => {
+              res.json({message: "User created"});
+            });
+          });
+        }
+      }).catch(e => res.status(409).send(e.message));
   });
 
   app.get('/api/restaurants', (req, res) => {

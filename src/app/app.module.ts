@@ -13,6 +13,7 @@ import { NewQuestionComponent } from './new-question/new-question.component';
 import { LoginComponent } from './login/login.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { RestaurantComponent } from './restaurant/restaurant.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { RestaurantComponent } from './restaurant/restaurant.component';
     NewQuestionComponent,
     LoginComponent,
     LandingPageComponent,
-    RestaurantComponent
+    RestaurantComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
