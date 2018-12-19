@@ -9,7 +9,7 @@ import {Question} from '../view-models/question';
 })
 export class QuestionsComponent implements OnInit {
 
-  static minutesSince(createTime: Date) {
+  minutesSince(createTime: Date) {
     const ms = Number(new Date()) - Number(new Date(createTime));
     const year = 1000 * 60 * 60 * 24 * 365.25;
     const week = 1000 * 60 * 60 * 24 * 7;
