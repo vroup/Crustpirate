@@ -5,7 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
 import {AuthService} from './auth.service';
-import {promise} from 'selenium-webdriver';
+import {User} from '../view-models/User';
 
 @Injectable({
   providedIn: 'root'
@@ -57,19 +57,24 @@ export class DataService {
   }
 
   Authenticate(username, password) {
-    this.http.post<any>(`${this.url_prefix}/api/authenticate/`, {
-      username: username,
-      password: password
-    }).subscribe(data => {
-      this.auth.SetToken(data.token);
-      this.auth.SetUser(username);
-      this.CreateHttpOptions();
-      // this.StartPollster();
-      this.router.navigate(['/'])
-        .then(() => {
-          this.changes.next(true);
-          console.log('Navigated!');
-        });
+    return new Promise((resolve, reject) => {
+      this.http.post<any>(`${this.url_prefix}/api/authenticate/`, {
+        username: username,
+        password: password
+      }).subscribe(data => {
+        const user: User = {username: data.username, id: data.id};
+        this.auth.SetToken(data.token);
+        this.auth.SetUser(user);
+        this.CreateHttpOptions();
+        // this.StartPollster();
+        this.router.navigate(['/'])
+          .then(() => {
+            this.changes.next(true);
+            resolve('Navigated!');
+          });
+      }, error => {
+        reject(error);
+      });
     });
   }
 

@@ -26,9 +26,7 @@ export class LandingPageComponent implements OnInit {
 
   goToRestaurant(f: NgForm) {
     const id: string = f.value.restaurant._id;
-    console.log(id);
     this.router.navigate(['/restaurant/' + id]);
-    // this.router.navigate(['/login']);
   }
 
 }

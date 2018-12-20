@@ -1,3 +1,7 @@
-<h1>{{restaurant?.name}}</h1>
-
-<a href="#">Write a review of {{restaurant?.name}}.</a>
+<h1>{{restaurant.name}}</h1>
+<p *ngIf="!isLoggedIn">
+  <a routerLink="/register">Sign up</a> or <a routerLink="/login">login</a> to write your own review of {{restaurant.name}}.
+</p>
+<p *ngIf="isLoggedIn">
+  <a routerLink="">Write a review.</a>
+</p>

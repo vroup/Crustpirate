@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from './services/auth.service';
 import {DataService} from './services/data.service';
+import {User} from './view-models/User';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import {DataService} from './services/data.service';
 })
 export class AppComponent implements OnInit {
 
-  user: string = null;
+  user: User = null;
 
   constructor(private service: DataService,
               private authService: AuthService) {
@@ -18,8 +19,9 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     console.log('subscribing to changes:');
     this.service.changes.subscribe(v => {
-      console.log('some changes occured', v);
-      this.user = this.authService.GetUser();
+      console.log('Login status changed:', v);
+      const user = this.authService.GetUser();
+      this.user = user;
     });
   }
 

@@ -9,6 +9,7 @@ module.exports = {
   connect: connect,
   getData: getData,
   getCollection: getCollection,
+  getDocument: getDocument,
   removeData: removeData,
   generateTestData: generateTestData,
   countData: countData,
@@ -21,7 +22,8 @@ module.exports = {
   insertQuestion: insertQuestion,
   insertAnswer: insertAnswer,
   upVote: upVote,
-  downVote: downVote
+  downVote: downVote,
+  checkUsername: checkUsername
 };
 
 function connect() {
@@ -47,13 +49,27 @@ function getData(query) {
 }
 
 function getCollection(collectionName, query) {
-  console.log(query);
   return new Promise((resolve, reject) => {
     client.db(dbName).collection(collectionName).find(query).toArray().then(
       (documents) => {
-        console.log(`Retrieved ${collectionName} from db.`);
+        console.log(`Retrieved ${documents.length} documents from ${collectionName}.`);
         resolve(documents);
       }).catch((error) => console.error(error));
+  });
+}
+
+function getDocument(collectionName, query) {
+  return new Promise((resolve, reject) => {
+    client.db(dbName).collection(collectionName).findOne(query).then(
+      document => document === null ? reject() : resolve(document))
+      .catch(error => console.error(error));
+  });
+}
+
+function checkUsername(username) {
+  return new Promise((resolve, reject) => {
+    client.db(dbName).collection("users").findOne({username: username})
+      .then(user => user !== null ? resolve(user) : reject());
   });
 }
 

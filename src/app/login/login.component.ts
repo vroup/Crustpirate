@@ -8,16 +8,20 @@ import {NgForm} from '@angular/forms';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  message: string;
 
   constructor(
     private dataService: DataService) {
   }
 
   ngOnInit() {
-//    this.username.value = '4';
   }
 
   onSubmit(form: NgForm) {
-    this.dataService.Authenticate(form.value.username, form.value.password);
+    this.dataService.Authenticate(form.value.username, form.value.password)
+      .then(() => {
+      }, response => {
+        this.message = response.error.message;
+      });
   }
 }

@@ -106,7 +106,6 @@ db.connect().then(() => {
 
   // Remember trailing slash when calling!
   app.post('/api/authenticate', (req, res) => {
-
     const username = req.body.username;
     const password = req.body.password;
 
@@ -126,7 +125,9 @@ db.connect().then(() => {
 
               res.json({
                 message: 'User authenticated successfully.',
-                token: token
+                token: token,
+                username: user.username,
+                id: user._id
               });
             } else res.status(401).json({message: "Password mismatch!"})
           });
@@ -141,23 +142,47 @@ db.connect().then(() => {
     const username = req.body.username;
     const password = req.body.password;
 
-    db.getCollection("users", {"username": username})
-      .then(users => {
-        if (users.length > 0) {
-          throw new Error("Username exists.");
-        } else {
-          bcrypt.hash(password, 10, function (err, hash) {
+    db.getDocument("users", {"username": username})
+      .then(() => {
+        throw new Error("Username exists.");
+      }, () => {
+        bcrypt.hash(password, 10, (err, hash) => {
             db.insertUser(username, hash).then(() => {
               res.json({message: "User created"});
             });
-          });
-        }
+          }
+        )
       }).catch(e => res.status(409).send(e.message));
+    /*
+        db.getCollection("users", {"username": username})
+          .then(users => {
+            if (users.length > 0) {
+              throw new Error("Username exists.");
+            } else {
+              bcrypt.hash(password, 10, function (err, hash) {
+                db.insertUser(username, hash).then(() => {
+                  res.json({message: "User created"});
+                });
+              });
+            }
+          }).catch(e => res.status(409).send(e.message));*/
   });
 
   app.get('/api/restaurants', (req, res) => {
     db.getCollection('restaurants', {})
-      .then(restaurants => res.json(restaurants))
+      .then(restaurants => res.json(restaurants));
+  });
+
+  app.get('/api/restaurant/:restaurantId', (req, res) => {
+    const query = {'_id': ObjectID(req.params.restaurantId)};
+    db.getDocument("restaurants", query)
+      .then(restaurant => res.status(200).send(restaurant));
+  });
+
+  app.get('/api/reviews/:restaurantId', (req, res) => {
+    const query = {'restaurantId': ObjectID(req.params.restaurantId)};
+    db.getCollection("reviews", query)
+      .then(reviews => res.status(200).send(reviews));
   });
 
   /// Get a question.

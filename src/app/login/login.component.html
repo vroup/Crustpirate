@@ -5,11 +5,7 @@
   <p>Password: <input type="text" ngModel name="password" required #password="ngModel"/>
   </p>
   <p>
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Submit" /> {{message}}
   </p>
 </form>
 
-<p>First name value: {{ username.value }}</p>
-<p>First name valid: {{ password.valid }}</p>
-<p>Form value: {{ form.value | json }}</p>
-<p>Form valid: {{ form.valid }}</p>

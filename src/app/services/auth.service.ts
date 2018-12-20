@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
+import {User} from '../view-models/User';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +13,19 @@ export class AuthService {
   constructor(private router: Router) {
   }
 
-  SetUser(user: string): void {
-    localStorage.setItem(this.usernameKey, user);
+  SetUser(user: User): void {
+    const userString = JSON.stringify(user);
+    localStorage.setItem(this.usernameKey, userString);
   }
 
   SetToken(token: string): void {
     localStorage.setItem(this.storageKey, token);
   }
 
-  GetUser(): string {
-    return localStorage.getItem(this.usernameKey);
+  GetUser(): User {
+    const userString = localStorage.getItem(this.usernameKey);
+    const user = JSON.parse(userString);
+    return user;
   }
 
   GetToken(): string {

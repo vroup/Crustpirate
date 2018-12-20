@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Restaurant} from '../view-models/restaurant';
-import {RestaurantService} from '../services/restaurant.service';
 import {Review} from '../view-models/review';
 import {ActivatedRoute} from '@angular/router';
+import {ReviewService} from '../services/review.service';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-restaurant',
@@ -12,12 +13,21 @@ import {ActivatedRoute} from '@angular/router';
 export class RestaurantComponent implements OnInit {
   restaurant: Restaurant = null;
   reviews: Review[];
+  isLoggedIn: boolean;
 
-  constructor(private service: RestaurantService,
-              private route: ActivatedRoute) { }
+  constructor(private service: ReviewService,
+              private route: ActivatedRoute,
+              private authService: AuthService) {
+    this.isLoggedIn = authService.IsLoggedIn();
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+    this.service.getRestaurant(id).subscribe(r => {
+      console.log(r);
+      this.restaurant = r;
+    });
+
     console.log(id);
     this.reviews = this.service.reviews;
   }

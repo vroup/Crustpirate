@@ -1,9 +1,12 @@
 <header>
-  <img src="./assets/logo.png" alt="The Crust Pirate Logo" style="">
+  <a routerLink="">
+    <img src="./assets/logo.png" alt="The Crust Pirate Logo" style="">
+  </a>
+
   <nav *ngIf="user === null">
-    <a routerLink="login">Login</a> | <a routerLink="register">Sign up</a>
+    <a routerLink="register">Sign up</a> | <a routerLink="login">Login</a>
   </nav>
-  <nav *ngIf="user !== null">Logged in as {{user}}, <a href="#" (click)="signOut()">sign out?</a></nav>
+  <nav *ngIf="user !== null">Logged in as {{user.username}}, <a href="#" (click)="signOut()">sign out?</a></nav>
 </header>
 
 <router-outlet></router-outlet>
