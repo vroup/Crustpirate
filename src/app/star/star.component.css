@@ -10,7 +10,7 @@
 
 .star {
   background-color: maroon;
-  background-image: url(/src/assets/rating-skull.png);
+  background-image: url(../../assets/rating-skull.png);
   background-size: contain;
   height: 100%;
   border-radius: 0.15rem;
