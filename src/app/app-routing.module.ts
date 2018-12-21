@@ -25,7 +25,7 @@ const appRoutes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forRoot(appRoutes, {enableTracing: false})
+    RouterModule.forRoot(appRoutes, {enableTracing: false, onSameUrlNavigation: 'reload'})
   ],
   declarations: [],
   exports: [
