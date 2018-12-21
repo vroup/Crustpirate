@@ -153,19 +153,6 @@ db.connect().then(() => {
           }
         )
       }).catch(e => res.status(409).send(e.message));
-    /*
-        db.getCollection("users", {"username": username})
-          .then(users => {
-            if (users.length > 0) {
-              throw new Error("Username exists.");
-            } else {
-              bcrypt.hash(password, 10, function (err, hash) {
-                db.insertUser(username, hash).then(() => {
-                  res.json({message: "User created"});
-                });
-              });
-            }
-          }).catch(e => res.status(409).send(e.message));*/
   });
 
   app.get('/api/restaurants', (req, res) => {
@@ -185,7 +172,12 @@ db.connect().then(() => {
       .then(reviews => res.status(200).send(reviews));
   });
 
-  /// Get a question.
+
+  /***
+   * QA-Engine stuff.
+   */
+
+  // Get a question.
   app.get('/api/question/:questionId', (req, res) => {
     const query = {'_id': ObjectID(req.params.questionId)};
     db.getCollection('questions', query)
@@ -240,7 +232,7 @@ db.connect().then(() => {
   /**** Reroute all unknown requests to angular index.html ****/
   app.get('/*', (req, res, next) => {
     console.log("This is an unknown request.");
-    res.sendFile(path.join(__dirname, '../dist/mandatory_exercise/index.html'));
+    res.sendFile(path.join(__dirname, '../dist/CrustPirate/index.html'));
   });
 });
 

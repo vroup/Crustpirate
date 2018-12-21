@@ -16,7 +16,6 @@ import {RestaurantComponent} from './restaurant/restaurant.component';
 import {RegisterComponent} from './register/register.component';
 import {RatingComponent} from './rating/rating.component';
 import {StarComponent} from './star/star.component';
-import {StarHostDirective} from './star-host.directive';
 
 @NgModule({
   declarations: [
@@ -31,8 +30,7 @@ import {StarHostDirective} from './star-host.directive';
     RestaurantComponent,
     RegisterComponent,
     RatingComponent,
-    StarComponent,
-    StarHostDirective
+    StarComponent
   ],
   imports: [
     BrowserModule,

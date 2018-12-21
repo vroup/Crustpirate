@@ -1,6 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {StarComponent} from '../star/star.component';
-import {StarHostDirective} from '../star-host.directive';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-rating',
@@ -9,7 +7,6 @@ import {StarHostDirective} from '../star-host.directive';
 })
 export class RatingComponent implements OnInit {
   @Input() value: number;
-  @ViewChild(StarHostDirective) starHost: StarHostDirective;
 
   fillAmounts: number[] = new Array(5);
 
