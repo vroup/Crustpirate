@@ -150,8 +150,8 @@ function countData(query) {
 function removeData(query) {
   return new Promise((resolve, reject) => {
     client.db(dbName).collection("data").remove(query).then(
-      (documents) => {
-        console.log("Removed data");
+      documents => {
+        console.log(`Removed ${documents.length} documents from "data"`);
       }).catch((error) => console.error(error));
   });
 }

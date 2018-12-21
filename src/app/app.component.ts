@@ -20,8 +20,7 @@ export class AppComponent implements OnInit {
     console.log('subscribing to changes:');
     this.service.changes.subscribe(v => {
       console.log('Login status changed:', v);
-      const user = this.authService.GetUser();
-      this.user = user;
+      this.user = this.authService.GetUser();
     });
   }
 

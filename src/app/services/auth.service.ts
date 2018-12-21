@@ -24,8 +24,7 @@ export class AuthService {
 
   GetUser(): User {
     const userString = localStorage.getItem(this.usernameKey);
-    const user = JSON.parse(userString);
-    return user;
+    return JSON.parse(userString);
   }
 
   GetToken(): string {

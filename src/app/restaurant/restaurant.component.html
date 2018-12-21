@@ -1,7 +1,14 @@
-<h1>{{restaurant.name}}</h1>
-<p *ngIf="!isLoggedIn">
-  <a routerLink="/register">Sign up</a> or <a routerLink="/login">login</a> to write your own review of {{restaurant.name}}.
-</p>
-<p *ngIf="isLoggedIn">
-  <a routerLink="">Write a review.</a>
-</p>
+<div *ngIf="restaurant !== undefined">
+  <h1>{{restaurant.name}}</h1>
+  <p>
+    <app-rating [value]="restaurant.rating"></app-rating>
+  </p>
+
+  <p *ngIf="!isLoggedIn">
+    <a routerLink="/register">Sign up</a> or <a routerLink="/login">login</a> to write your own review
+    of {{restaurant.name}}.
+  </p>
+  <p *ngIf="isLoggedIn">
+    <a routerLink="">Write a review.</a>
+  </p>
+</div>

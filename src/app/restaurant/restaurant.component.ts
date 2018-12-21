@@ -11,7 +11,7 @@ import {AuthService} from '../services/auth.service';
   styleUrls: ['./restaurant.component.css']
 })
 export class RestaurantComponent implements OnInit {
-  restaurant: Restaurant = null;
+  restaurant: Restaurant;
   reviews: Review[];
   isLoggedIn: boolean;
 
@@ -24,12 +24,11 @@ export class RestaurantComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     this.service.getRestaurant(id).subscribe(r => {
-      console.log(r);
       this.restaurant = r;
     });
 
-    console.log(id);
-    this.reviews = this.service.reviews;
+    // this.reviews = this.service.reviews;
   }
+
 
 }

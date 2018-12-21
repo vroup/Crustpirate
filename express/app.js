@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const checkJwt = require('express-jwt');
 
-const server = require('http').Server(express);
-const io = require('socket.io')(server);
+// const server = require('http').Server(express);
+// const io = require('socket.io')(server);
 
 /**** App modules ****/
 const db = require('./db');

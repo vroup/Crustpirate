@@ -1,0 +1,17 @@
+.star-container {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.3rem;
+  border: 0.15rem outset silver;
+  display: inline-block;
+  margin: 0.175rem;
+  background-color: gray;
+}
+
+.star {
+  background-color: maroon;
+  background-image: url(/src/assets/rating-skull.png);
+  background-size: contain;
+  height: 100%;
+  border-radius: 0.15rem;
+}

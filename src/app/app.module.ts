@@ -14,6 +14,9 @@ import { LoginComponent } from './login/login.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { RestaurantComponent } from './restaurant/restaurant.component';
 import { RegisterComponent } from './register/register.component';
+import { RatingComponent } from './rating/rating.component';
+import { StarComponent } from './star/star.component';
+import { StarHostDirective } from './star-host.directive';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { RegisterComponent } from './register/register.component';
     LoginComponent,
     LandingPageComponent,
     RestaurantComponent,
-    RegisterComponent
+    RegisterComponent,
+    RatingComponent,
+    StarComponent,
+    StarHostDirective
   ],
   imports: [
     BrowserModule,
