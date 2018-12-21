@@ -17,7 +17,6 @@ import {RegisterComponent} from './register/register.component';
 import {RatingComponent} from './rating/rating.component';
 import {StarComponent} from './star/star.component';
 import {StarHostDirective} from './star-host.directive';
-import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -41,7 +40,7 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
