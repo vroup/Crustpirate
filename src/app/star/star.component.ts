@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-star',
@@ -6,15 +6,19 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./star.component.css']
 })
 export class StarComponent implements OnInit {
-  @Input() fillAmount: number;
-  widthExp: number;
 
   constructor() {
+  }
+  @Input() fillAmount: number;
+  @Input() value: number;
+
+  widthExp: number;
+
+  @HostListener('mouseenter') onMouseEnter() {
+    // this.highlight(this.highlightColor || 'red');
   }
 
   ngOnInit() {
     this.widthExp = this.fillAmount * 100;
-    console.log(this.widthExp);
   }
-
 }

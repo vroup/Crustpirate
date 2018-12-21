@@ -16,6 +16,7 @@ module.exports = {
   insertData: insertData,
   insertMockQuestions: insertMockQuestions,
   insertMockRestaurants: insertMockRestaurants,
+  insertReview: insertReview,
   insertMockUsers: insertMockUsers,
   insertUser: insertUser,
   insertMockAnswers: insertMockAnswers,
@@ -23,7 +24,8 @@ module.exports = {
   insertAnswer: insertAnswer,
   upVote: upVote,
   downVote: downVote,
-  checkUsername: checkUsername
+  checkUsername: checkUsername,
+  getLatestReviews: getLatestReviews
 };
 
 function connect() {
@@ -51,7 +53,7 @@ function getData(query) {
 function getCollection(collectionName, query) {
   return new Promise((resolve, reject) => {
     client.db(dbName).collection(collectionName).find(query).toArray().then(
-      (documents) => {
+      documents => {
         console.log(`Retrieved ${documents.length} documents from ${collectionName}.`);
         resolve(documents);
       }).catch((error) => console.error(error));
@@ -137,6 +139,16 @@ function insertAnswer(text, questionId) {
   });
 }
 
+function getLatestReviews(number) {
+  return new Promise((resolve, reject) => {
+    client.db(dbName).collection("reviews").find().sort({_id: 1}).limit(number).toArray((err, result) => {
+      if (err) throw err;
+      resolve(result);
+    })
+  });
+
+}
+
 function countData(query) {
   return new Promise((resolve, reject) => {
     client.db(dbName).collection("data").countDocuments(query).then(
@@ -220,14 +232,28 @@ const mockRestaurants = [
 function insertMockRestaurants() {
   return new Promise((resolve, reject) => {
     const restaurants = client.db(dbName).collection("restaurants");
+    const reviews = client.db(dbName).collection("reviews");
 
     restaurants.deleteMany({}).then(
       () => {
         restaurants.insertMany(mockRestaurants).then(result => {
           console.log(`Inserted mock restaurants.`);
-          resolve(result);
+
+          reviews.deleteMany({}).then(r => {
+            console.log("reviews deleted");
+            resolve(result);
+          });
         }).catch((error) => console.error(error));
       });
+  });
+}
+
+function insertReview(review) {
+  return new Promise((resolve, reject) => {
+    review.createTime = new Date();
+    const reviews = client.db(dbName).collection("reviews");
+    reviews.insertOne(review)
+      .then(resolve(review.restaurantId));
   });
 }
 

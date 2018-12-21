@@ -2,7 +2,6 @@
   We put the R's in Restaurant Reviews!
 </h1>
 
-
 <form #f="ngForm">
   <label>Restaurants near you*:
     <select name="restaurant" ngModel (change)="goToRestaurant(f)">
@@ -19,4 +18,4 @@
   <small>*) Near Business Academy Aarhus to be precise</small>
 </p>
 
-<pre>Selected: {{f.value | json}}</pre>
+<app-review-streamer></app-review-streamer>

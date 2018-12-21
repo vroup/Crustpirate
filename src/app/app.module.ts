@@ -16,6 +16,8 @@ import {RestaurantComponent} from './restaurant/restaurant.component';
 import {RegisterComponent} from './register/register.component';
 import {RatingComponent} from './rating/rating.component';
 import {StarComponent} from './star/star.component';
+import { ReviewStreamerComponent } from './review-streamer/review-streamer.component';
+import { ComposeReviewComponent } from './compose-review/compose-review.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import {StarComponent} from './star/star.component';
     RestaurantComponent,
     RegisterComponent,
     RatingComponent,
-    StarComponent
+    StarComponent,
+    ReviewStreamerComponent,
+    ComposeReviewComponent
   ],
   imports: [
     BrowserModule,

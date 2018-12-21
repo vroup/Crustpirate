@@ -1,0 +1,40 @@
+<div *ngIf="isLoggedIn">
+  <div *ngIf="restaurant !== undefined">
+    <h1>How was your experience with {{restaurant.name}}?</h1>
+
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <div>
+        <label for="title">
+          Title:<br>
+          <input id="title" name="title" type="text" ngModel>
+        </label>
+      </div>
+      <div>
+        <label for="review">
+          Your review:<br>
+          <textarea name="review" id="review" cols="30" rows="10" ngModel></textarea>
+        </label>
+      </div>
+      <div>
+        Your rating: <select name="rating" ngModel>
+        <option value="" disabled selected>?</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select><br>
+        <app-rating [value]="f.value.rating"></app-rating>
+      </div>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+  <div></div>
+
+
+</div>
+<div *ngIf="!isLoggedIn">
+  <p>You appear to be logged out. Please <a routerLink="/login">log in</a> or <a routerLink="/register">sign up</a> to
+    write reviews.</p>
+  <p>I</p>
+</div>

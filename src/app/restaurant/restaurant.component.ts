@@ -4,6 +4,7 @@ import {Review} from '../view-models/review';
 import {ActivatedRoute} from '@angular/router';
 import {ReviewService} from '../services/review.service';
 import {AuthService} from '../services/auth.service';
+import {Question} from '../view-models/question';
 
 @Component({
   selector: 'app-restaurant',
@@ -12,12 +13,13 @@ import {AuthService} from '../services/auth.service';
 })
 export class RestaurantComponent implements OnInit {
   restaurant: Restaurant;
-  reviews: Review[];
+  // reviews: Review[] = [];
   isLoggedIn: boolean;
 
   constructor(private service: ReviewService,
               private route: ActivatedRoute,
-              private authService: AuthService) {
+              private authService: AuthService
+  ) {
     this.isLoggedIn = authService.IsLoggedIn();
   }
 
@@ -27,8 +29,11 @@ export class RestaurantComponent implements OnInit {
       this.restaurant = r;
     });
 
-    // this.reviews = this.service.reviews;
+    this.service.getReviews(id);
   }
 
+  get reviews(): Review[] {
+    return this.service.reviews;
+  }
 
 }

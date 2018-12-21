@@ -58,13 +58,6 @@ app.use((err, req, res, next) => {
   }
 });
 
-/**** Mock data ****/
-let data = [
-  {id: 1, text: "This is some text 1.", details: "Some more details 1"},
-  {id: 2, text: "This is some text 2.", details: "Some more details 2"},
-  {id: 3, text: "This is some text 3.", details: "Some more details 3"},
-];
-
 let mockUsers = [
   {username: "kristian", hash: ""},
   {username: "skb", hash: ""}
@@ -80,7 +73,14 @@ bcrypt.hash("password456", 10, function (err, hash) {
   console.log("Mock hash generated");
 });
 
-/**** Routes ****/
+/**** Old in-memory data from template ****/
+// Mock data
+let data = [
+  {id: 1, text: "This is some text 1.", details: "Some more details 1"},
+  {id: 2, text: "This is some text 2.", details: "Some more details 2"},
+  {id: 3, text: "This is some text 3.", details: "Some more details 3"},
+];
+
 app.get('/api/my_data', (req, res) => res.json(data));
 
 app.post('/api/my_data', (req, res) => {
@@ -98,12 +98,12 @@ app.post('/api/my_data', (req, res) => {
 
 /**** Connect to MongoDB and Start! ****/
 db.connect().then(() => {
-  /// Insert mock data. Need only run once.
+  /**** Empty collections and insert fresh mock data ****/
   db.insertMockQuestions();
-  // db.insertMockAnswers();
   db.insertMockRestaurants();
   db.insertMockUsers(mockUsers);
 
+  /**** User administration ****/
   // Remember trailing slash when calling!
   app.post('/api/authenticate', (req, res) => {
     const username = req.body.username;
@@ -155,6 +155,7 @@ db.connect().then(() => {
       }).catch(e => res.status(409).send(e.message));
   });
 
+  /**** Restaurants and reviews ****/
   app.get('/api/restaurants', (req, res) => {
     db.getCollection('restaurants', {})
       .then(restaurants => res.json(restaurants));
@@ -167,17 +168,33 @@ db.connect().then(() => {
   });
 
   app.get('/api/reviews/:restaurantId', (req, res) => {
-    const query = {'restaurantId': ObjectID(req.params.restaurantId)};
-    db.getCollection("reviews", query)
+    const restaurantId = ObjectID(req.params.restaurantId);
+    db.getCollection("reviews", {'restaurantId': restaurantId})
       .then(reviews => res.status(200).send(reviews));
   });
 
+  app.get('/api/reviews/recent/:limit', (req, res) => {
+    const limit = Number(req.params.limit);
 
-  /***
-   * QA-Engine stuff.
-   */
+    db.getLatestReviews(limit).then(reviews => res.status(200).send(reviews));
+  });
 
-  // Get a question.
+  app.post('/api/review', (req, res) => {
+    const restaurantId = ObjectID(req.body.restaurantId);
+    const userId = ObjectID(req.body.userId)
+    const query = {
+      'restaurantId': restaurantId,
+      'userId': userId,
+      'rating': req.body.rating,
+      'title': req.body.title,
+      'text': req.body.text,
+      'createTime': new Date()
+    };
+    db.insertReview(query).then(() => res.status(200).json({message: "Review submitted."}));
+  });
+
+  /**** QA-Engine stuff ****/
+  // GET a question.
   app.get('/api/question/:questionId', (req, res) => {
     const query = {'_id': ObjectID(req.params.questionId)};
     db.getCollection('questions', query)
@@ -195,13 +212,13 @@ db.connect().then(() => {
       .then(questions => res.json(questions));
   });
 
-  // POST new question and add it to the array.
+  // POST new question.
   app.post('/api/question', (req, res) => {
     db.insertQuestion(req.body.question, req.body.title)
       .then(newId => res.json(newId));
   });
 
-  // POST new answer and add it to the array.
+  // POST new answer and add label question "answered".
   app.post('/api/answer', (req, res) => {
     const questionId = ObjectID(req.body.questionId);
     db.getCollection('questions', {'_id': questionId}).then(q => {
@@ -217,7 +234,7 @@ db.connect().then(() => {
   app.get('/api/answers/:questionId', (req, res) => {
     const questionId = ObjectID(req.params.questionId);
     db.getCollection('answers', {'questionId': questionId})
-      .then(answers => res.json(answers));
+      .then(answers => res.status(200).json(answers));
   });
 
   app.put('/api/upVote', (req, res) => {

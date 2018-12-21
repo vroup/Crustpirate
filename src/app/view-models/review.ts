@@ -5,4 +5,5 @@ export class Review {
   title: string;
   text: string;
   createTime: Date;
+  rating: number;
 }

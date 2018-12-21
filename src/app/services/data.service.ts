@@ -56,7 +56,8 @@ export class DataService {
     this.pollster.unsubscribe();
   }
 
-  Authenticate(username, password) {
+  Authenticate(username, password, returnUrl) {
+    console.log(returnUrl);
     return new Promise((resolve, reject) => {
       this.http.post<any>(`${this.url_prefix}/api/authenticate/`, {
         username: username,
@@ -67,7 +68,7 @@ export class DataService {
         this.auth.SetUser(user);
         this.CreateHttpOptions();
         // this.StartPollster();
-        this.router.navigate(['/'])
+        this.router.navigate([returnUrl || '/'])
           .then(() => {
             this.changes.next(true);
             resolve('Navigated!');

@@ -1,14 +1,29 @@
 <div *ngIf="restaurant !== undefined">
   <h1>{{restaurant.name}}</h1>
-  <p>
-    <app-rating [value]="restaurant.rating"></app-rating>
-  </p>
 
-  <p *ngIf="!isLoggedIn">
-    <a routerLink="/register">Sign up</a> or <a routerLink="/login">login</a> to write your own review
+  <app-rating [value]="restaurant.rating"></app-rating>
+
+  <div *ngIf="!isLoggedIn">
+    <a routerLink="/register">Sign up</a> or <a routerLink="/login" [queryParams]="{returnUrl: route.snapshot.url}">login</a>
+    to write your own review
     of {{restaurant.name}}.
-  </p>
-  <p *ngIf="isLoggedIn">
-    <a routerLink="">Write a review.</a>
-  </p>
+  </div>
+  <div *ngIf="isLoggedIn">
+    <a routerLink="/compose/{{restaurant._id}}">Write a review.</a>
+  </div>
+
+  <div *ngIf="reviews?.length > 0">
+    <p>See what other users have said about {{restaurant.name}}:</p>
+    <ul>
+      <li *ngFor="let review of reviews">
+        reviewed {{review.createTime | date}} by {{review.userId}}: <br>
+        <app-rating [value]="review.rating"></app-rating>
+        <br>
+        <h2>{{review.title}}</h2>
+        <p>{{review.text}}</p>
+      </li>
+    </ul>
+
+  </div>
+
 </div>
